@@ -101,7 +101,7 @@ function NavHeader() {
                         to={path.login}
                         className="mx-3 capitalize hover:text-white/70"
                     >
-                        Đăng nhập123
+                        Đăng nhập
                     </Link>
                 </div>
             )}
