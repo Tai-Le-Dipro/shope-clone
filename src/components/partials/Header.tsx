@@ -35,11 +35,11 @@ function Header() {
                 <NavHeader />
 
                 <nav className="grid w-full grid-cols-10 space-x-4 py-4">
-                    <div className="col-span-2">
+                    {/* <div className="col-span-2">
                         <Link to="/">
                             <Logo className="h-full w-28 fill-white lg:w-44" />
                         </Link>
-                    </div>
+                    </div> */}
 
                     <form className="col-span-7" onSubmit={onSubmitSearch}>
                         <label
@@ -76,7 +76,7 @@ function Header() {
                                 <div className="relative max-w-[400px] space-x-2 rounded-sm border border-gray-200 bg-white p-4 text-sm shadow-md">
                                     {/* header */}
                                     {purchasesInCart &&
-                                    purchasesInCart.length > 0 ? (
+                                        purchasesInCart.length > 0 ? (
                                         <div className="p-2">
                                             <p className="capitalize text-gray-400">
                                                 Sản phẩm mới thêm
@@ -127,9 +127,9 @@ function Header() {
                                             <div className="mt-6 flex items-center justify-between">
                                                 <p className="text-sx capitalize text-gray-500">
                                                     {purchasesInCart.length >
-                                                    MAX_PURCHASES
+                                                        MAX_PURCHASES
                                                         ? purchasesInCart.length -
-                                                          MAX_PURCHASES
+                                                        MAX_PURCHASES
                                                         : ''}{' '}
                                                     Thêm hàng vào giỏ
                                                 </p>
