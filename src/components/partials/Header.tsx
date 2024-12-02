@@ -63,7 +63,7 @@ function Header() {
                             <Button
                                 type="submit"
                                 primary
-                                className="absolute right-2.5 bottom-2.5"
+                                className="absolute bottom-2.5 right-2.5"
                             >
                                 <AiOutlineSearch />
                             </Button>
@@ -76,7 +76,7 @@ function Header() {
                                 <div className="relative max-w-[400px] space-x-2 rounded-sm border border-gray-200 bg-white p-4 text-sm shadow-md">
                                     {/* header */}
                                     {purchasesInCart &&
-                                        purchasesInCart.length > 0 ? (
+                                    purchasesInCart.length > 0 ? (
                                         <div className="p-2">
                                             <p className="capitalize text-gray-400">
                                                 Sản phẩm mới thêm
@@ -127,9 +127,9 @@ function Header() {
                                             <div className="mt-6 flex items-center justify-between">
                                                 <p className="text-sx capitalize text-gray-500">
                                                     {purchasesInCart.length >
-                                                        MAX_PURCHASES
+                                                    MAX_PURCHASES
                                                         ? purchasesInCart.length -
-                                                        MAX_PURCHASES
+                                                          MAX_PURCHASES
                                                         : ''}{' '}
                                                     Thêm hàng vào giỏ
                                                 </p>
