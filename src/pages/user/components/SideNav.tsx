@@ -17,7 +17,7 @@ export default function SideNav() {
             <div className="flex items-center border-b border-b-gray-200 py-4">
                 <Link
                     to={path.profile}
-                    className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10"
+                    className="h-12 w-12 flex-shrink-0 overflow-hidden text-clip rounded-full border border-black/10"
                 >
                     <img
                         alt={profile.name}
