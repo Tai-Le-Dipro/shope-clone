@@ -35,11 +35,11 @@ function Header() {
                 <NavHeader />
 
                 <nav className="grid w-full grid-cols-10 space-x-4 py-4">
-                    {/* <div className="col-span-2">
+                    <div className="col-span-2">
                         <Link to="/">
                             <Logo className="h-full w-28 fill-white lg:w-44" />
                         </Link>
-                    </div> */}
+                    </div>
 
                     <form className="col-span-7" onSubmit={onSubmitSearch}>
                         <label
