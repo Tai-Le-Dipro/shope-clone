@@ -222,9 +222,9 @@ export default function Profile() {
                     <div className="flex flex-col items-center">
                         <div className="my-5 h-24 w-24">
                             <img
-                                src={preview || getAvatarUrl(avatar)}
+                                src={preview || avatar}
                                 alt={profile.name}
-                                className="w-full rounded-full object-cover"
+                                className="h-full w-full rounded-full object-cover"
                             />
                         </div>
                         <input

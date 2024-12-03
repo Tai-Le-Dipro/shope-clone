@@ -20,7 +20,6 @@ export default function SideNav() {
                     className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10"
                 >
                     <img
-                        src={getAvatarUrl(profile.avatar)}
                         alt={profile.name}
                         className="h-full w-full object-cover"
                     />
