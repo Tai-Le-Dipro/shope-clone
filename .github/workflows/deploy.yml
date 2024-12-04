@@ -34,33 +34,33 @@ jobs:
               env:
                   VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
-            - name: Deploy to server using SSH
-              uses: appleboy/ssh-action@v1.2.0
-              with:
-                  host: ${{ secrets.SERVER_IP }}
-                  username: ${{ secrets.SERVER_USER }}
-                  key: ${{ secrets.PRIVATE_KEY_PATH }}
-                  port: 22
-                  script: |
-                  # /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone
-                      # Đường dẫn tới thư mục chính và thư mục tạm
-                      CURRENT_DIST=${{ secrets.DEPLOY_PATH }}/dist
-                      TEMP_DIST=${{ secrets.DEPLOY_PATH }}/dist_temp
+            # - name: Deploy to server using SSH
+            #   uses: appleboy/ssh-action@v1.2.0
+            #   with:
+            #       host: ${{ secrets.SERVER_IP }}
+            #       username: ${{ secrets.SERVER_USER }}
+            #       key: ${{ secrets.PRIVATE_KEY_PATH }}
+            #       port: 22
+            #       script: |
+            #       # /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone
+            #           # Đường dẫn tới thư mục chính và thư mục tạm
+            #           CURRENT_DIST=${{ secrets.DEPLOY_PATH }}/dist
+            #           TEMP_DIST=${{ secrets.DEPLOY_PATH }}/dist_temp
 
-                      # Tạo thư mục tạm nếu chưa có
-                      sudo mkdir -p /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
-                      sudo chmod 755 /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
+            #           # Tạo thư mục tạm nếu chưa có
+            #           sudo mkdir -p /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
+            #           sudo chmod 755 /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
 
-                      # Đồng bộ nội dung build vào thư mục tạm
-                      sudo rsync -avz --delete /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist/ /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
+            #           # Đồng bộ nội dung build vào thư mục tạm
+            #           sudo rsync -avz --delete /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist/ /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
 
-                      # Xóa thư mục dist cũ nếu tồn tại
-                      if [ -d "/home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist" ]; then
-                        sudo rm -rf /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist
-                      fi
+            #           # Xóa thư mục dist cũ nếu tồn tại
+            #           if [ -d "/home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist" ]; then
+            #             sudo rm -rf /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist
+            #           fi
 
-                      # Chuyển thư mục tạm thành thư mục chính
-                      sudo mv /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist
+            #           # Chuyển thư mục tạm thành thư mục chính
+            #           sudo mv /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist
 
-                      # Khởi động lại dịch vụ Nginx để áp dụng thay đổi
-                      sudo systemctl restart nginx
+            #           # Khởi động lại dịch vụ Nginx để áp dụng thay đổi
+            #           sudo systemctl restart nginx
