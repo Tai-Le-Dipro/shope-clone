@@ -22,6 +22,13 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
 
+            - name: Verify VITE_API_URL secret
+              run: |
+                  if [ -z "${{ secrets.VITE_API_URL }}" ]; then
+                      echo "Error: VITE_API_URL secret is not set." >&2
+                      exit 1
+                  fi
+
             - name: Create .env file
               run: |
                   echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
@@ -34,33 +41,43 @@ jobs:
               env:
                   VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
-            # - name: Deploy to server using SSH
-            #   uses: appleboy/ssh-action@v1.2.0
-            #   with:
-            #       host: ${{ secrets.SERVER_IP }}
-            #       username: ${{ secrets.SERVER_USER }}
-            #       key: ${{ secrets.PRIVATE_KEY_PATH }}
-            #       port: 22
-            #       script: |
-            #       # /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone
-            #           # Đường dẫn tới thư mục chính và thư mục tạm
-            #           CURRENT_DIST=${{ secrets.DEPLOY_PATH }}/dist
-            #           TEMP_DIST=${{ secrets.DEPLOY_PATH }}/dist_temp
+            - name: Deploy to server using SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SERVER_IP }}
+                  username: ${{ secrets.SERVER_USER }}
+                  key: ${{ secrets.PRIVATE_KEY }}
+                  port: 22
+                  script: |
+                      # Đường dẫn thư mục chính và tạm
+                      DEPLOY_PATH=${{ secrets.DEPLOY_PATH }}
+                      CURRENT_DIST=$DEPLOY_PATH/dist
+                      TEMP_DIST=$DEPLOY_PATH/dist_temp
 
-            #           # Tạo thư mục tạm nếu chưa có
-            #           sudo mkdir -p /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
-            #           sudo chmod 755 /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
+                      # Tạo thư mục tạm nếu chưa có
+                      sudo mkdir -p $TEMP_DIST
+                      sudo chmod 755 $TEMP_DIST
 
-            #           # Đồng bộ nội dung build vào thư mục tạm
-            #           sudo rsync -avz --delete /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist/ /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp
+                      # Đồng bộ nội dung build vào thư mục tạm
+                      sudo rsync -avz --delete ./dist/ $TEMP_DIST
 
-            #           # Xóa thư mục dist cũ nếu tồn tại
-            #           if [ -d "/home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist" ]; then
-            #             sudo rm -rf /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist
-            #           fi
+                      # Kiểm tra thư mục tạm đã được đồng bộ đầy đủ chưa
+                      if [ "$(ls -A $TEMP_DIST)" ]; then
+                          echo "Temporary directory is ready for deployment."
+                      else
+                          echo "Error: Temporary directory is empty." >&2
+                          exit 1
+                      fi
 
-            #           # Chuyển thư mục tạm thành thư mục chính
-            #           sudo mv /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist_temp /home/ubuntu/actions-runner/shope-clone/shope-clone/shope-clone/dist
+                      # Xóa thư mục dist cũ nếu tồn tại
+                      if [ -d "$CURRENT_DIST" ]; then
+                          sudo rm -rf $CURRENT_DIST
+                      fi
 
-            #           # Khởi động lại dịch vụ Nginx để áp dụng thay đổi
-            #           sudo systemctl restart nginx
+                      # Chuyển thư mục tạm thành thư mục chính
+                      sudo mv $TEMP_DIST $CURRENT_DIST
+
+                      # Khởi động lại dịch vụ Nginx để áp dụng thay đổi
+                      sudo systemctl restart nginx
+
+                      echo "Deployment successful."
